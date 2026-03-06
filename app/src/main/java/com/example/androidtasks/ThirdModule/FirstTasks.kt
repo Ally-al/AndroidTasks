@@ -21,7 +21,7 @@ class FirstTasks {
     }
 
     // В логе:
-    // "HAHAHA", "onSubscribeThread = Schedulers.io"
+    // "HAHAHA", "onSubscribeThread = Schedulers.computation"
     // "HAHAHA", "mapThread = Schedulers.newThread"
     // "HAHAHA", "flatMapThread = Schedulers.single"
     // "HAHAHA", "subscribeThread = Schedulers.single"
