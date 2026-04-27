@@ -8,60 +8,19 @@ class FirstFragment : Fragment(R.layout.fragment_first)
 class SecondFragment : Fragment(R.layout.fragment_second)
 class ThirdFragment : Fragment(R.layout.fragment_third)
 
-enum class Screen {
-    FIRST,
-    SECOND,
-    THIRD
-}
 
 class AppRouter(
     private val fragmentManager: FragmentManager,
     private val containerId: Int
 ) {
-    private var currentScreen: Screen = Screen.FIRST
-
-    init {
-        openFirst()
+    fun open(fragment: Fragment) {
+        fragmentManager.beginTransaction()
+            .replace(containerId, fragment)
+            .addToBackStack(null)
+            .commit()
     }
-
-    fun next() {
-        when (currentScreen) {
-            Screen.FIRST -> openSecond()
-            Screen.SECOND -> openThird()
-            Screen.THIRD -> openFirst()
-        }
-    }
-
     fun back() {
-        when (currentScreen) {
-            Screen.THIRD -> openSecond()
-            Screen.SECOND -> openFirst()
-            Screen.FIRST -> openThird()
-        }
-    }
-
-    private fun openFirst() {
-        fragmentManager.beginTransaction()
-            .replace(containerId, FirstFragment())
-            .commit()
-
-        currentScreen = Screen.FIRST
-    }
-
-    private fun openSecond() {
-        fragmentManager.beginTransaction()
-            .replace(containerId, SecondFragment())
-            .commit()
-
-        currentScreen = Screen.SECOND
-    }
-
-    private fun openThird() {
-        fragmentManager.beginTransaction()
-            .replace(containerId, ThirdFragment())
-            .commit()
-
-        currentScreen = Screen.THIRD
+        fragmentManager.popBackStack()
     }
 }
 
@@ -74,8 +33,27 @@ val router = AppRouter(
 
 // использование во фрагментах
 
+// FirstFragment
 nextButton.setOnClickListener {
-    router.next()
+    router.open(SecondFragment())
+}
+
+backButton.setOnClickListener {
+    router.back()
+}
+
+// SecondFragment
+nextButton.setOnClickListener {
+    router.open(ThirdFragment())
+}
+
+backButton.setOnClickListener {
+    router.back()
+}
+
+// ThirdFragment
+nextButton.setOnClickListener {
+    router.open(FirstFragment())
 }
 
 backButton.setOnClickListener {
